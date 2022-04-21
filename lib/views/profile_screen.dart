@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:test/main.dart';
 import 'package:test/views/register_screen.dart';
 
+import 'main_calendar_screen.dart';
+
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
 
@@ -103,6 +105,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         RegisterDataScreen()));
                           },
                           child: const Text("Zmień swoje dane",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              )))),
+
+                  const SizedBox(height: 28.0),
+                  Container(
+                      width: double.infinity,
+                      child: RawMaterialButton(
+                          fillColor: Colors.blue,
+                          elevation: 0.0,
+                          padding: const EdgeInsets.symmetric(vertical: 15.0),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12.0)),
+                          onPressed: () async {
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        MainCalendarScreen()));
+                          },
+                          child: const Text("Twoje wizyty",
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 18.0,
