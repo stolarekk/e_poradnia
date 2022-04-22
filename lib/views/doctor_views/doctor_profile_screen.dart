@@ -4,21 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:test/main.dart';
 import 'package:test/views/register_data_screen.dart';
 import 'package:test/views/register_screen.dart';
+import 'package:test/views/main_calendar_screen.dart';
 
-import 'main_calendar_screen.dart';
-
-class ProfileHomePage extends StatefulWidget {
-  const ProfileHomePage({Key? key}) : super(key: key);
+class DoctorProfileHomePage extends StatefulWidget {
+  const DoctorProfileHomePage({Key? key}) : super(key: key);
 
   @override
-  State<ProfileHomePage> createState() => _ProfileHomePageState();
+  State<DoctorProfileHomePage> createState() => _DoctorProfileHomePageState();
 }
 
-class _ProfileHomePageState extends State<ProfileHomePage> {
+class _DoctorProfileHomePageState extends State<DoctorProfileHomePage> {
   int _selectedIndex = 0;
 
   final screens = [
-    ProfileScreen(),
+    DoctorProfileScreen(),
     RegisterDataScreen(),
     MainCalendarScreen(),
     Center(
@@ -52,14 +51,14 @@ class _ProfileHomePageState extends State<ProfileHomePage> {
   }
 }
 
-class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+class DoctorProfileScreen extends StatefulWidget {
+  const DoctorProfileScreen({Key? key}) : super(key: key);
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  State<DoctorProfileScreen> createState() => _DoctorProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
   String name = "";
   String lastname = "";
 
@@ -93,7 +92,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         color: Colors.black,
                         fontSize: 28.0,
                         fontWeight: FontWeight.bold)),
-                const Text("Witaj na swoim profilu!",
+                const Text("Witaj na swoim profilu, doktorze!",
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 20.0,
