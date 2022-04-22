@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:test/views/profile_screen.dart';
 import 'package:test/views/register_screen.dart';
 
+import 'doctor_views/doctor_profile_screen.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -12,6 +14,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  String userType = "";
+
   static Future<User?> loginUsingEmailPassword(
       {required String email,
       required String password,
@@ -54,6 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 54.0),
                 TextField(
                     controller: _emailController,
+                    textInputAction: TextInputAction.next,
                     keyboardType: TextInputType.emailAddress,
                     decoration: const InputDecoration(
                         hintText: "Wpisz e-mail",
@@ -61,6 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 26.0),
                 TextField(
                     controller: _passwordController,
+                    textInputAction: TextInputAction.done,
                     obscureText: true,
                     decoration: const InputDecoration(
                         hintText: "Wpisz hasło",
@@ -112,11 +118,27 @@ class _LoginScreenState extends State<LoginScreen> {
                               email: _emailController.text,
                               password: _passwordController.text,
                               context: context);
-
-                          if (user != null) {
+                          //odczyt rangi użytkownika - rozpoznawanie czy pacjent czy doktor
+                          DocumentSnapshot snap = await FirebaseFirestore
+                              .instance
+                              .collection("UserData")
+                              .doc(FirebaseAuth.instance.currentUser!.uid)
+                              .get();
+                          setState(() {
+                            userType = (snap.data()
+                                as Map<String, dynamic>)['usertype'];
+                          });
+                          //
+                          if (user != null && userType == 'patient') {
                             Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
-                                    builder: (context) => ProfileScreen()));
+                                    builder: (context) => ProfileHomePage()));
+                          }
+                          if (user != null && userType == 'doctor') {
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        DoctorProfileHomePage()));
                           }
                         },
                         child: const Text("Login",
