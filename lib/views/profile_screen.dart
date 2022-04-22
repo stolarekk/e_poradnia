@@ -126,7 +126,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     builder: (context) =>
                                         MainCalendarScreen()));
                           },
-                          child: const Text("Twoje wizyty",
+                          child: const Text("Kalendarz wizyt",
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 18.0,
