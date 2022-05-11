@@ -133,12 +133,20 @@ class _LoginScreenState extends State<LoginScreen> {
                             Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
                                     builder: (context) => ProfileHomePage()));
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text(
+                                        'Pomyślnie zalogowano na konto pacjenta')));
                           }
                           if (user != null && userType == 'doctor') {
                             Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
                                     builder: (context) =>
                                         DoctorProfileHomePage()));
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text(
+                                        'Pomyślnie zalogowano na konto doktora')));
                           }
                         },
                         child: const Text("Login",
