@@ -28,24 +28,89 @@ class _MainCalendarScreenState extends State<MainCalendarScreen> {
             title: Text("Kalendarz"),
             centerTitle: true,
           ),
-          body: SfCalendar(
-            view: CalendarView.month,
-            firstDayOfWeek: 1,
-            initialSelectedDate: DateTime.now(),
-            dataSource: MeetingDataSource(_getDataSource()),
-            monthViewSettings: const MonthViewSettings(
-                appointmentDisplayMode: MonthAppointmentDisplayMode.appointment,
-                showAgenda: true),
-          ),
-          floatingActionButton: FloatingActionButton(
-            child: Icon(Icons.add, color: Colors.white),
-            backgroundColor: Colors.blueGrey,
-            onPressed: () =>
-                Navigator.of(context)
-                    .push(MaterialPageRoute(
-                    builder: (context) => EventEditingPage())),
+          body: Container(
+            child: FutureBuilder(
+              future: _getDataFromFirebase(),
+              builder: (context, snapshot) {
+                switch (snapshot.connectionState){
+                  case ConnectionState.none:
+                    return Text('none');
+                 case ConnectionState.done:
+                  return
+                    Scaffold(
+                      body: SfCalendar(
+                        view: CalendarView.month,
+                        firstDayOfWeek: 1,
+                        initialSelectedDate: DateTime.now(),
+                        //dataSource: MeetingDataSource(_getDataSource()),
+                        dataSource: MeetingDataSource(snapshot.data as List<Meeting>),
+                        monthViewSettings: const MonthViewSettings(
+                            appointmentDisplayMode: MonthAppointmentDisplayMode.appointment,
+                            showAgenda: true),
+                      ),
+                      floatingActionButton: FloatingActionButton(
+                        child: Icon(Icons.add, color: Colors.white),
+                        backgroundColor: Colors.blueGrey,
+                        onPressed: () =>
+                            Navigator.of(context)
+                                .push(MaterialPageRoute(
+                                builder: (context) => EventEditingPage())),
+                      ),
+                    );
+                  default:
+                    return Text('default');
+                }
+              },
+            ),
           ),
         );
+  }
+
+  CollectionReference _collectionRef = FirebaseFirestore.instance.collection('Events');
+
+  Future<List<Meeting>> _getDataFromFirebase() async {
+    final List<Meeting> meetings = <Meeting>[];
+
+    QuerySnapshot querySnapshot = await _collectionRef.get();
+    final allEventsData = List<dynamic>.from(querySnapshot.docs.map((doc) => doc.data()));
+
+    allEventsData.forEach((element) {
+      meetings.add(Meeting(
+              element['title'],
+              element['fromDate'].toDate(),
+              element['toDate'].toDate(),
+              const Color(0xFF860F5A),
+              false
+          ));
+    });
+
+    return meetings;
+
+    // meetings.add(Meeting(
+    //     'Dr Jan Nowak',
+    //     startTime.add(const Duration(days: 17)),
+    //     endTime.add(const Duration(days: 21)),
+    //     const Color(0xFF0F8644),
+    //     false));
+
+    // DocumentSnapshot snap = await FirebaseFirestore
+    //     .instance
+    //     .collection("Events")
+    //     .doc('GWEGlDb0l8IUQFFFf6DT')
+    //     .get();
+    // var eventName = (snap.data() as Map<String, dynamic>)['title'];
+    // print(eventName);
+    // var fromDate = (snap.data() as Map<String, dynamic>)['fromDate'];
+    // //print(fromDate);
+    // var toDate = (snap.data() as Map<String, dynamic>)['toDate'];
+    // //print(toDate);
+    // meetings.add(Meeting(
+    //     eventName,
+    //     fromDate.toDate(),
+    //     toDate.toDate(),
+    //     const Color(0xFF860F5A),
+    //     false
+    // ));
   }
 
   List<Meeting> _getDataSource() {
@@ -55,16 +120,18 @@ class _MainCalendarScreenState extends State<MainCalendarScreen> {
         DateTime(today.year, today.month, today.day, 9, 0, 0);
     final DateTime endTime = startTime.add(const Duration(hours: 2));
 
-    meetings.add(Meeting(
-        'Dr Jan Nowak', startTime, endTime, const Color(0xFF700CB8), false));
-    meetings.add(Meeting(
-        'Dr Andrzej Nowak',
-        startTime.add(const Duration(hours: 6)),
-        endTime.add(const Duration(hours: 8)),
-        const Color(0xFF0F8644),
-        false));
-    meetings.add(Meeting('Dr Jan Nowak', startTime.add(const Duration(days: 5)),
-        endTime.add(const Duration(days: 5)), const Color(0xFF700CB8), false));
+    final FirebaseController cont = FirebaseController();
+
+    // meetings.add(Meeting(
+    //     'Dr Jan Nowak', startTime, endTime, const Color(0xFF700CB8), false));
+    // meetings.add(Meeting(
+    //     'Dr Andrzej Nowak',
+    //     startTime.add(const Duration(hours: 6)),
+    //     endTime.add(const Duration(hours: 8)),
+    //     const Color(0xFF0F8644),
+    //     false));
+    // meetings.add(Meeting('Dr Jan Nowak', startTime.add(const Duration(days: 5)),
+    //     endTime.add(const Duration(days: 5)), const Color(0xFF700CB8), false));
     meetings.add(Meeting(
         'Dr Jan Nowak',
         startTime.add(const Duration(days: 17)),
@@ -72,37 +139,75 @@ class _MainCalendarScreenState extends State<MainCalendarScreen> {
         const Color(0xFF0F8644),
         false));
 
+    print(meetings[0].eventName);
+    print(meetings[0].from);
+    print(meetings[0].to);
+    print(meetings[0].background);
+    print(meetings[0].isAllDay);
 
-       //meetings.add(_getDataSourceFromFirebase();});
-
+    //meetings.add(cont.getDataSourceFromFirebase());
 
     return meetings;
   }
 
-
-Future<Meeting> _getDataSourceFromFirebase() async {
-  late final Meeting meetingData;
-
-  print('23');
-  DocumentSnapshot snap = await FirebaseFirestore
-      .instance
-      .collection("Events")
-      .doc(FirebaseAuth.instance.currentUser!.uid)
-      .get();
-
-  meetingData = Meeting(
-      (snap.data() as Map<String, dynamic>)['title'],
-      (snap.data() as Map<String, dynamic>)['fromDate'] as DateTime,
-      (snap.data() as Map<String, dynamic>)['toDate'] as DateTime,
-      const Color(0xFF860F5A),
-      false
-  );
-
-  print(meetingData.from);
-
-  return meetingData;
 }
 
+class FirebaseController {
+
+  Future<Meeting> getEventFromFirebaseFuture() async {
+    Meeting meetingData;
+
+    DocumentSnapshot snap = await FirebaseFirestore
+        .instance
+        .collection("Events")
+        .doc('GWEGlDb0l8IUQFFFf6DT')
+        .get();
+
+    var eventName = (snap.data() as Map<String, dynamic>)['title'];
+    eventName = getTitleFromFirebase();
+    print(eventName);
+
+    var fromDate = (snap.data() as Map<String, dynamic>)['fromDate'];
+    //print(fromDate);
+
+    var toDate = (snap.data() as Map<String, dynamic>)['toDate'];
+    //print(toDate);
+
+     meetingData = Meeting(
+        eventName,
+        fromDate.toDate(),
+        toDate.toDate(),
+        const Color(0xFF860F5A),
+        false
+    );
+
+    print('Z bazy');
+    print(meetingData.eventName);
+    print(meetingData.from);
+    print(meetingData.to);
+    print(meetingData.background);
+    print(meetingData.isAllDay);
+
+    return meetingData;
+  }
+
+  Meeting getDataSourceFromFirebase() {
+
+    Meeting meet = getEventFromFirebaseFuture() as Meeting;
+
+    return meet;
+  }
+
+  Future<String> getTitleFromFirebase() async {
+    DocumentSnapshot snap = await FirebaseFirestore
+        .instance
+        .collection("Events")
+        .doc('GWEGlDb0l8IUQFFFf6DT')
+        .get();
+
+    var eventName = (snap.data() as Map<String, dynamic>)['title'];
+    return eventName ;
+  }
 }
 
 class MeetingDataSource extends CalendarDataSource {
