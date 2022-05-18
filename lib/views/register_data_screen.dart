@@ -52,6 +52,10 @@ class _RegisterDataScreenState extends State<RegisterDataScreen> {
     final TextEditingController _weightController = TextEditingController();
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Twoje dane"),
+        centerTitle: true,
+      ),
       body: Padding(
           padding: EdgeInsets.all(16.0),
           child: ListView(children: [

@@ -5,6 +5,9 @@ import 'package:test/main.dart';
 import 'package:test/views/register_data_screen.dart';
 import 'package:test/views/register_screen.dart';
 import 'package:test/views/main_calendar_screen.dart';
+import 'package:intl/intl.dart';
+import '../event_editing_page.dart';
+import '../reservation_screen.dart';
 
 class DoctorProfileHomePage extends StatefulWidget {
   const DoctorProfileHomePage({Key? key}) : super(key: key);
@@ -81,10 +84,31 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
 
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Strona główna"),
+        centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.logout),
+            tooltip: 'Wyloguj się',
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut();
+              FirebaseAuth.instance.userChanges().listen((User? user) {
+                if (user == null) {
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => HomePage()));
+                }
+              });
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Text('Pomyślnie wylogowano z konta')));
+            },
+          ),
+        ],
+      ),
       body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              //mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text("E-poradnia",
@@ -92,47 +116,94 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                         color: Colors.black,
                         fontSize: 28.0,
                         fontWeight: FontWeight.bold)),
-                const Text("Witaj na swoim profilu, doktorze!",
+                const SizedBox(height: 5.0),
+                const Text("Witaj na profilu doktora!",
                     style: TextStyle(
                         color: Colors.black,
-                        fontSize: 20.0,
+                        fontSize: 22.0,
                         fontWeight: FontWeight.bold)),
-                const SizedBox(height: 40),
-                ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size.fromHeight(50),
-                    ),
-                    icon: const Icon(
-                      Icons.arrow_back_outlined,
-                      size: 25,
-                      color: Colors.white,
-                    ),
-                    label: const Text(
-                      "Wyloguj się",
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    ),
-                    onPressed: () async {
-                      await FirebaseAuth.instance.signOut();
-                      FirebaseAuth.instance.userChanges().listen((User? user) {
-                        if (user == null) {
-                          Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                  builder: (context) => HomePage()));
-                        }
-                      });
-                    }),
-                /*Container(
-                child: RawMaterialButton(
-                    fillColor: Colors.red,
-                    onPressed: () {
-                      print(FirebaseAuth.instance.currentUser);
-                    },
-                    child: const Text("Current User",
-                        style: TextStyle(color: Colors.white, fontSize: 18.0))),
-              ),*/
+                const SizedBox(height: 40.0),
+                Container(
+                    height: 150,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        RawMaterialButton(
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => EventEditingPage()));
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.cyan[200],
+                              border: Border.all(color: Colors.black, width: 1),
+                              borderRadius: BorderRadius.circular(12.0),
+                            ),
+                            margin: const EdgeInsets.only(right: 8),
+                            width: 150,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Icon(Icons.edit_calendar_rounded, size: 40.0),
+                                Text('Ustal godziny wizyt',
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 14.0,
+                                        fontWeight: FontWeight.bold)),
+                              ],
+                            ),
+                          ),
+                        ),
+                        RawMaterialButton(
+                          onPressed: () {},
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.red[400],
+                              border: Border.all(color: Colors.black, width: 1),
+                              borderRadius: BorderRadius.circular(12.0),
+                            ),
+                            margin: const EdgeInsets.only(right: 8),
+                            width: 150,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Icon(Icons.cancel_presentation_rounded,
+                                    size: 40.0),
+                                Text('Odwołaj wizytę',
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 14.0,
+                                        fontWeight: FontWeight.bold)),
+                              ],
+                            ),
+                          ),
+                        ),
+                        RawMaterialButton(
+                          onPressed: () {},
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.green[200],
+                              border: Border.all(color: Colors.black, width: 1),
+                              borderRadius: BorderRadius.circular(12.0),
+                            ),
+                            margin: const EdgeInsets.only(right: 10),
+                            width: 150,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Icon(Icons.difference_outlined, size: 40.0),
+                                Text('Dodaj opis wizyty',
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 13.0,
+                                        fontWeight: FontWeight.bold)),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    )),
+                const SizedBox(height: 40.0),
               ])),
     );
   }
