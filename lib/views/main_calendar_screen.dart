@@ -17,73 +17,68 @@ class MainCalendarScreen extends StatefulWidget {
 class _MainCalendarScreenState extends State<MainCalendarScreen> {
   @override
   Widget build(BuildContext context) {
-        return Scaffold(
-          appBar: AppBar(
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back, color: Colors.black),
-              onPressed: () =>
-                  Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => ProfileScreen())),
-            ),
-            title: Text("Kalendarz"),
-            centerTitle: true,
-          ),
-          body: Container(
-            child: FutureBuilder(
-              future: _getDataFromFirebase(),
-              builder: (context, snapshot) {
-                switch (snapshot.connectionState){
-                  case ConnectionState.none:
-                    return Text('none');
-                 case ConnectionState.done:
-                  return
-                    Scaffold(
-                      body: SfCalendar(
-                        view: CalendarView.month,
-                        firstDayOfWeek: 1,
-                        initialSelectedDate: DateTime.now(),
-                        //dataSource: MeetingDataSource(_getDataSource()),
-                        dataSource: MeetingDataSource(snapshot.data as List<Meeting>),
-                        monthViewSettings: const MonthViewSettings(
-                            appointmentDisplayMode: MonthAppointmentDisplayMode.appointment,
-                            showAgenda: true),
-                      ),
-                      floatingActionButton: FloatingActionButton(
-                        child: Icon(Icons.add, color: Colors.white),
-                        backgroundColor: Colors.blueGrey,
-                        onPressed: () =>
-                            Navigator.of(context)
-                                .push(MaterialPageRoute(
-                                builder: (context) => EventEditingPage())),
-                      ),
-                    );
-                  default:
-                    return Text('default');
-                }
-              },
-            ),
-          ),
-        );
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => ProfileScreen())),
+        ),
+        title: Text("Kalendarz"),
+        centerTitle: true,
+      ),
+      body: Container(
+        child: FutureBuilder(
+          future: _getDataFromFirebase(),
+          builder: (context, snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.none:
+                return Text('none');
+              case ConnectionState.done:
+                return Scaffold(
+                  body: SfCalendar(
+                    view: CalendarView.month,
+                    firstDayOfWeek: 1,
+                    initialSelectedDate: DateTime.now(),
+                    //dataSource: MeetingDataSource(_getDataSource()),
+                    dataSource:
+                        MeetingDataSource(snapshot.data as List<Meeting>),
+                    monthViewSettings: const MonthViewSettings(
+                        appointmentDisplayMode:
+                            MonthAppointmentDisplayMode.appointment,
+                        showAgenda: true),
+                  ),
+                  floatingActionButton: FloatingActionButton(
+                      child: Icon(Icons.add, color: Colors.white),
+                      backgroundColor: Colors.blueGrey,
+                      onPressed: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (context) => EventEditingPage()))),
+                );
+
+              default:
+                return Text('default');
+            }
+          },
+        ),
+      ),
+    );
   }
 
-  CollectionReference _collectionRef = FirebaseFirestore.instance.collection('Events');
+  CollectionReference _collectionRef =
+      FirebaseFirestore.instance.collection('Events');
 
   Future<List<Meeting>> _getDataFromFirebase() async {
     final List<Meeting> meetings = <Meeting>[];
 
     QuerySnapshot querySnapshot = await _collectionRef.get();
-    final allEventsData = List<dynamic>.from(querySnapshot.docs.map((doc) => doc.data()));
+    final allEventsData =
+        List<dynamic>.from(querySnapshot.docs.map((doc) => doc.data()));
 
     allEventsData.forEach((element) {
-      meetings.add(Meeting(
-              element['title'],
-              element['fromDate'].toDate(),
-              element['toDate'].toDate(),
-              const Color(0xFF860F5A),
-              false
-          ));
+      meetings.add(Meeting(element['title'], element['fromDate'].toDate(),
+          element['toDate'].toDate(), const Color(0xFF860F5A), false));
     });
-
     return meetings;
 
     // meetings.add(Meeting(
@@ -149,16 +144,13 @@ class _MainCalendarScreenState extends State<MainCalendarScreen> {
 
     return meetings;
   }
-
 }
 
 class FirebaseController {
-
   Future<Meeting> getEventFromFirebaseFuture() async {
     Meeting meetingData;
 
-    DocumentSnapshot snap = await FirebaseFirestore
-        .instance
+    DocumentSnapshot snap = await FirebaseFirestore.instance
         .collection("Events")
         .doc('GWEGlDb0l8IUQFFFf6DT')
         .get();
@@ -173,13 +165,8 @@ class FirebaseController {
     var toDate = (snap.data() as Map<String, dynamic>)['toDate'];
     //print(toDate);
 
-     meetingData = Meeting(
-        eventName,
-        fromDate.toDate(),
-        toDate.toDate(),
-        const Color(0xFF860F5A),
-        false
-    );
+    meetingData = Meeting(eventName, fromDate.toDate(), toDate.toDate(),
+        const Color(0xFF860F5A), false);
 
     print('Z bazy');
     print(meetingData.eventName);
@@ -192,21 +179,19 @@ class FirebaseController {
   }
 
   Meeting getDataSourceFromFirebase() {
-
     Meeting meet = getEventFromFirebaseFuture() as Meeting;
 
     return meet;
   }
 
   Future<String> getTitleFromFirebase() async {
-    DocumentSnapshot snap = await FirebaseFirestore
-        .instance
+    DocumentSnapshot snap = await FirebaseFirestore.instance
         .collection("Events")
         .doc('GWEGlDb0l8IUQFFFf6DT')
         .get();
 
     var eventName = (snap.data() as Map<String, dynamic>)['title'];
-    return eventName ;
+    return eventName;
   }
 }
 
@@ -249,8 +234,6 @@ class MeetingDataSource extends CalendarDataSource {
 
     return meetingData;
   }
-
-
 }
 
 class Meeting {

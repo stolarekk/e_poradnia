@@ -4,34 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:test/views/login_screen.dart';
 import 'package:test/views/profile_screen.dart';
 
-/*class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({Key? key}) : super(key: key);
-
-  @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
-}
-
-class _RegisterScreenState extends State<RegisterScreen> {
-  int _count = 0;
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Sample Code'),
-      ),
-      body: Center(child: Text('You have pressed the button $_count times.')),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => LoginScreen()));
-        },
-        tooltip: 'Increment Counter',
-        child: const Icon(Icons.add),
-      ),
-    );
-  }
-}*/
-
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
 
@@ -128,19 +100,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 color: Colors.white,
                                 fontSize: 18.0,
                                 fontWeight: FontWeight.bold)))),
-                /*Container(
-                  child: RawMaterialButton(
-                      fillColor: Colors.red,
-                      onPressed: () {
-                        print(FirebaseAuth.instance.currentUser);
-                      },
-                      child: const Text("Current User",
-                          style:
-                              TextStyle(color: Colors.white, fontSize: 18.0))),
-                ),*/
               ])),
     );
   }
 }
-
-//wpisywanie danych po rejestracji:
