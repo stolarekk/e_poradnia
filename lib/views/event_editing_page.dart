@@ -25,12 +25,24 @@ class _EventEditingPageState extends State<EventEditingPage> {
   late DateTime fromDate;
   late DateTime toDate;
 
+  late String doctorName;
+  late String doctorLastName;
+
   Future<Event?> registerEventData(
       {required String title,
         required String description,
         required DateTime fromDate,
         required DateTime toDate,
-        required bool isFree}) async {
+        required bool isFree,
+        required String doctorId,
+        required String doctorName,
+        required String doctorLastName,
+        required String patientId,
+        required String patientName,
+        required String patientLastName,
+        required bool isAllDay
+
+      }) async {
     try {
         await FirebaseFirestore.instance
             .collection('Events')
@@ -40,6 +52,13 @@ class _EventEditingPageState extends State<EventEditingPage> {
           'fromDate': fromDate,
           'toDate': toDate,
           'isFree': true,
+          'doctorId': doctorId,
+          'doctorName': doctorName,
+          'doctorLastName': doctorLastName,
+          'patientId': patientId,
+          'patientName': patientName,
+          'patientLastName': patientLastName,
+          'isAllDay': false
         });
     } catch (err) {
       print(err.toString());
@@ -248,8 +267,21 @@ class _EventEditingPageState extends State<EventEditingPage> {
         ],
       );
 
+
   Future saveForm() async {
+
     final isValid = _formKey.currentState!.validate();
+
+    DocumentSnapshot snap = await FirebaseFirestore
+        .instance
+        .collection("UserData")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+
+    setState(() {
+      doctorName = (snap.data() as Map<String, dynamic>)['name'];
+      doctorLastName = (snap.data() as Map<String, dynamic>)['lastname'];
+    });
 
     if(isValid) {
       final event = Event(
@@ -257,6 +289,14 @@ class _EventEditingPageState extends State<EventEditingPage> {
         description: 'Description',
         from: fromDate,
         to: toDate,
+          isFree: true,
+          doctorId: FirebaseAuth.instance.currentUser!.uid,
+          doctorName: doctorName,
+          doctorLastName: doctorLastName,
+          patientId: '',
+          patientName: '',
+          patientLastName: '',
+          isAllDay: false
       );
 
       await registerEventData(
@@ -264,7 +304,14 @@ class _EventEditingPageState extends State<EventEditingPage> {
           description: event.description,
           fromDate: event.from,
           toDate: event.to,
-          isFree: true
+          isFree: true,
+          doctorId: event.doctorId,
+          doctorName: event.doctorName,
+          doctorLastName: event.doctorLastName,
+          patientId: event.patientId,
+          patientName: event.patientName,
+          patientLastName: event.patientLastName,
+          isAllDay: false
       );
 
       //final provider = Provider.of<EventProvider>(
