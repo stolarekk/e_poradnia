@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:test/main.dart';
+import 'package:test/views/cancel_visit_screen.dart';
 import 'package:test/views/medical_documentation.dart';
 import 'package:test/views/register_data_screen.dart';
 import 'package:test/views/register_screen.dart';
@@ -156,7 +157,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ),
                         RawMaterialButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        CancellationScreen()));
+                          },
                           child: Container(
                             decoration: BoxDecoration(
                               color: Colors.red[200],

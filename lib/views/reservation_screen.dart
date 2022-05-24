@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:test/views/profile_screen.dart';
 import 'package:test/views/main_calendar_screen.dart';
@@ -47,7 +48,46 @@ class _ReservationScreenState extends State<ReservationScreen> {
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) => Card(
                       child: RawMaterialButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                    title: Text(
+                                        "Czy na pewno chcesz zarezerwować tę wizytę?"),
+                                    content: Text(snapshot.data!.docs[index]
+                                            ["title"] +
+                                        ", " +
+                                        DateFormat('dd MMM yyy, H:mm').format(
+                                            snapshot
+                                                .data!.docs[index]["fromDate"]
+                                                .toDate())),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () async {
+                                            await FirebaseFirestore.instance
+                                                .collection('Events')
+                                                .doc(snapshot.data!.docs[index]
+                                                    .reference.id)
+                                                .update({
+                                              'isFree': false,
+                                              'patientId': FirebaseAuth
+                                                  .instance.currentUser!.uid
+                                            });
+                                          },
+                                          child: Text(
+                                            "TAK",
+                                            style: TextStyle(
+                                                color: Colors.amber[700]),
+                                          )),
+                                      TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                          child: Text("NIE",
+                                              style: TextStyle(
+                                                  color: Colors.amber[700])))
+                                    ],
+                                  ));
+                        },
                         child: Container(
                             height: 60,
                             child: Row(
