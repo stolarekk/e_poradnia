@@ -8,6 +8,7 @@ import 'package:test/views/register_data_screen.dart';
 import 'package:test/views/register_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:test/views/reservation_screen.dart';
+import 'package:test/views/visit_history.dart';
 import 'main_calendar_screen.dart';
 
 class ProfileHomePage extends StatefulWidget {
@@ -24,9 +25,7 @@ class _ProfileHomePageState extends State<ProfileHomePage> {
     ProfileScreen(),
     RegisterDataScreen(),
     MainCalendarScreen(),
-    Center(
-        child:
-            Text('Historia wizyt - w budowie', style: TextStyle(fontSize: 60)))
+    VisitHistoryScreen()
   ];
   @override
   Widget build(BuildContext context) {

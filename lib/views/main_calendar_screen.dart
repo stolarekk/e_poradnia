@@ -19,11 +19,6 @@ class _MainCalendarScreenState extends State<MainCalendarScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => ProfileScreen())),
-        ),
         title: Text("Kalendarz"),
         centerTitle: true,
       ),
@@ -68,12 +63,10 @@ class _MainCalendarScreenState extends State<MainCalendarScreen> {
   CollectionReference _collectionRef =
       FirebaseFirestore.instance.collection('Events');
 
-
   Future<List<Meeting>> _getDataFromFirebase() async {
     final List<Meeting> meetings = <Meeting>[];
 
-    DocumentSnapshot snap = await FirebaseFirestore
-        .instance
+    DocumentSnapshot snap = await FirebaseFirestore.instance
         .collection("UserData")
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .get();
@@ -82,12 +75,14 @@ class _MainCalendarScreenState extends State<MainCalendarScreen> {
 
     QuerySnapshot querySnapshot;
 
-    if (userType == 'patient'){
-      querySnapshot = await _collectionRef.where("patientId",
-          isEqualTo: FirebaseAuth.instance.currentUser!.uid).get();
-    }else{
-      querySnapshot = await _collectionRef.where("doctorId",
-          isEqualTo: FirebaseAuth.instance.currentUser!.uid).get();
+    if (userType == 'patient') {
+      querySnapshot = await _collectionRef
+          .where("patientId", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+          .get();
+    } else {
+      querySnapshot = await _collectionRef
+          .where("doctorId", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+          .get();
     }
 
     // QuerySnapshot querySnapshot = await _collectionRef.where!("patientId",

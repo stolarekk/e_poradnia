@@ -18,6 +18,9 @@ class _ReservationScreenState extends State<ReservationScreen> {
       .orderBy("fromDate", descending: true)
       .snapshots();
   @override
+  late String patientName;
+  late String patientLastName;
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -64,6 +67,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                     actions: [
                                       TextButton(
                                           onPressed: () async {
+                                            getUsername();
                                             await FirebaseFirestore.instance
                                                 .collection('Events')
                                                 .doc(snapshot.data!.docs[index]
@@ -71,19 +75,22 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                                 .update({
                                               'isFree': false,
                                               'patientId': FirebaseAuth
-                                                  .instance.currentUser!.uid
+                                                  .instance.currentUser!.uid,
+                                              'patientLastName':
+                                                  patientLastName,
+                                              'patientName': patientName
                                             });
                                             await FirebaseFirestore.instance
                                                 .collection('Notification')
                                                 .add({
-                                              'title': snapshot.data!.docs[index]
-                                              ["title"],
+                                              'title': snapshot
+                                                  .data!.docs[index]["title"],
                                               'fromDate': Timestamp.now(),
                                               'status': "Rezerwacja",
-                                              'doctorId': snapshot.data!.docs[index]
-                                              ["doctorId"],
-                                              'patientId': snapshot.data!.docs[index]
-                                              ["patientId"],
+                                              'doctorId': snapshot.data!
+                                                  .docs[index]["doctorId"],
+                                              'patientId': snapshot.data!
+                                                  .docs[index]["patientId"],
                                             });
                                           },
                                           child: Text(
@@ -146,5 +153,16 @@ class _ReservationScreenState extends State<ReservationScreen> {
                     ));
           }),
     );
+  }
+
+  void getUsername() async {
+    DocumentSnapshot snap = await FirebaseFirestore.instance
+        .collection("UserData")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+    setState(() {
+      patientName = (snap.data() as Map<String, dynamic>)['name'];
+      patientLastName = (snap.data() as Map<String, dynamic>)['lastname'];
+    });
   }
 }

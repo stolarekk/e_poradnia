@@ -13,7 +13,6 @@ class CancellationScreen extends StatefulWidget {
 }
 
 class _CancellationScreenState extends State<CancellationScreen> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +30,7 @@ class _CancellationScreenState extends State<CancellationScreen> {
       body: StreamBuilder(
           stream: FirebaseFirestore.instance
               .collection("Events")
-              .where!("patientId",
+              .where("patientId",
                   isEqualTo: FirebaseAuth.instance.currentUser!.uid)
               .snapshots(),
           builder: (context,
@@ -68,19 +67,21 @@ class _CancellationScreenState extends State<CancellationScreen> {
                                                     .reference.id)
                                                 .update({
                                               'isFree': true,
-                                              'patientId': null
+                                              'patientId': "",
+                                              'patientLastName': "",
+                                              'patientName': ""
                                             });
                                             await FirebaseFirestore.instance
                                                 .collection('Notification')
                                                 .add({
-                                              'title': snapshot.data!.docs[index]
-                                              ["title"],
+                                              'title': snapshot
+                                                  .data!.docs[index]["title"],
                                               'fromDate': Timestamp.now(),
                                               'status': "Odwołano",
-                                              'doctorId': snapshot.data!.docs[index]
-                                              ["doctorId"],
-                                              'patientId': snapshot.data!.docs[index]
-                                              ["patientId"],
+                                              'doctorId': snapshot.data!
+                                                  .docs[index]["doctorId"],
+                                              'patientId': snapshot.data!
+                                                  .docs[index]["patientId"],
                                             });
                                           },
                                           child: Text(
