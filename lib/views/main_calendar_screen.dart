@@ -68,10 +68,31 @@ class _MainCalendarScreenState extends State<MainCalendarScreen> {
   CollectionReference _collectionRef =
       FirebaseFirestore.instance.collection('Events');
 
+
   Future<List<Meeting>> _getDataFromFirebase() async {
     final List<Meeting> meetings = <Meeting>[];
 
-    QuerySnapshot querySnapshot = await _collectionRef.get();
+    DocumentSnapshot snap = await FirebaseFirestore
+        .instance
+        .collection("UserData")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+
+    String userType = (snap.data() as Map<String, dynamic>)['usertype'];
+
+    QuerySnapshot querySnapshot;
+
+    if (userType == 'patient'){
+      querySnapshot = await _collectionRef.where("patientId",
+          isEqualTo: FirebaseAuth.instance.currentUser!.uid).get();
+    }else{
+      querySnapshot = await _collectionRef.where("doctorId",
+          isEqualTo: FirebaseAuth.instance.currentUser!.uid).get();
+    }
+
+    // QuerySnapshot querySnapshot = await _collectionRef.where!("patientId",
+    //     isEqualTo: FirebaseAuth.instance.currentUser!.uid).get();
+
     final allEventsData =
         List<dynamic>.from(querySnapshot.docs.map((doc) => doc.data()));
 
