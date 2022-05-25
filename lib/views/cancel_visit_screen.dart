@@ -13,10 +13,7 @@ class CancellationScreen extends StatefulWidget {
 }
 
 class _CancellationScreenState extends State<CancellationScreen> {
-  final Stream<QuerySnapshot> _eventsStream = FirebaseFirestore.instance
-      .collection('Events')
-      .orderBy("fromDate", descending: true)
-      .snapshots();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,6 +69,18 @@ class _CancellationScreenState extends State<CancellationScreen> {
                                                 .update({
                                               'isFree': true,
                                               'patientId': null
+                                            });
+                                            await FirebaseFirestore.instance
+                                                .collection('Notification')
+                                                .add({
+                                              'title': snapshot.data!.docs[index]
+                                              ["title"],
+                                              'fromDate': Timestamp.now(),
+                                              'status': "Odwołano",
+                                              'doctorId': snapshot.data!.docs[index]
+                                              ["doctorId"],
+                                              'patientId': snapshot.data!.docs[index]
+                                              ["patientId"],
                                             });
                                           },
                                           child: Text(

@@ -73,6 +73,18 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                               'patientId': FirebaseAuth
                                                   .instance.currentUser!.uid
                                             });
+                                            await FirebaseFirestore.instance
+                                                .collection('Notification')
+                                                .add({
+                                              'title': snapshot.data!.docs[index]
+                                              ["title"],
+                                              'fromDate': Timestamp.now(),
+                                              'status': "Rezerwacja",
+                                              'doctorId': snapshot.data!.docs[index]
+                                              ["doctorId"],
+                                              'patientId': snapshot.data!.docs[index]
+                                              ["patientId"],
+                                            });
                                           },
                                           child: Text(
                                             "TAK",

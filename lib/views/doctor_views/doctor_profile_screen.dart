@@ -7,6 +7,7 @@ import 'package:test/views/register_screen.dart';
 import 'package:test/views/main_calendar_screen.dart';
 import 'package:intl/intl.dart';
 import '../event_editing_page.dart';
+import '../notification_screen.dart';
 import '../reservation_screen.dart';
 
 class DoctorProfileHomePage extends StatefulWidget {
@@ -179,6 +180,32 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                           ),
                         ),
                         RawMaterialButton(
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => NotyficationScreen()));
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.pink[100],
+                              border: Border.all(color: Colors.black, width: 1),
+                              borderRadius: BorderRadius.circular(12.0),
+                            ),
+                            margin: const EdgeInsets.only(right: 10),
+                            width: 150,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Icon(Icons.access_alarm_sharp, size: 40.0),
+                                Text('Powiadomienia',
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 13.0,
+                                        fontWeight: FontWeight.bold)),
+                              ],
+                            ),
+                          ),
+                        ),
+                        RawMaterialButton(
                           onPressed: () {},
                           child: Container(
                             decoration: BoxDecoration(
@@ -202,7 +229,8 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                           ),
                         ),
                       ],
-                    )),
+                    )
+                ),
                 const SizedBox(height: 40.0),
               ])),
     );
