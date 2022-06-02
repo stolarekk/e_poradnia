@@ -32,7 +32,7 @@ class _VisitHistoryScreenState extends State<VisitHistoryScreen> {
               .collection("Events")
               .where("patientId",
                   isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-              .where("toDate", isLessThanOrEqualTo: DateTime.now())
+              //.where("toDate", isLessThanOrEqualTo: DateTime.now())
               .snapshots(),
           builder: (context,
               AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {

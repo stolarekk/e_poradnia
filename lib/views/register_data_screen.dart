@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -19,22 +21,17 @@ class _RegisterDataScreenState extends State<RegisterDataScreen> {
       required String weight,
       required String height}) async {
     try {
-      if (FirebaseAuth.instance.currentUser!.uid != null &&
-          name.isNotEmpty &&
-          lastname.isNotEmpty &&
-          birthdate.isNotEmpty &&
-          weight.isNotEmpty &&
-          height.isNotEmpty) {
+      if (FirebaseAuth.instance.currentUser!.uid != null) {
         await FirebaseFirestore.instance
             .collection('UserData')
             .doc(FirebaseAuth.instance.currentUser!.uid)
-            .set({
+            .update({
           'name': name,
           'lastname': lastname,
           'userid': FirebaseAuth.instance.currentUser!.uid,
           'height': height,
           'birthdate': birthdate,
-          'weight': weight,
+          'weight': weight
         });
       }
     } catch (err) {
@@ -43,14 +40,19 @@ class _RegisterDataScreenState extends State<RegisterDataScreen> {
     ;
   }
 
+  late String patientName = "";
+  late String patientLastName = "";
+  late String patientBirthdate = "";
+  late String patientHeight = "";
+  late String patientWeight = "";
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _lastnameController = TextEditingController();
+  final TextEditingController _birthdateController = TextEditingController();
+  final TextEditingController _heightController = TextEditingController();
+  final TextEditingController _weightController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    final TextEditingController _nameController = TextEditingController();
-    final TextEditingController _lastnameController = TextEditingController();
-    final TextEditingController _birthdateController = TextEditingController();
-    final TextEditingController _heightController = TextEditingController();
-    final TextEditingController _weightController = TextEditingController();
-
+    getUsername();
     return Scaffold(
       appBar: AppBar(
         title: Text("Twoje dane"),
@@ -75,43 +77,50 @@ class _RegisterDataScreenState extends State<RegisterDataScreen> {
                 controller: _nameController,
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.next,
-                decoration: const InputDecoration(
-                    hintText: "Wpisz swoje imię",
-                    prefixIcon: Icon(Icons.mail, color: Colors.black))),
+                decoration: InputDecoration(
+                    hintText: patientName,
+                    labelText: "Wpisz swoje imię",
+                    prefixIcon:
+                        Icon(Icons.person_pin_rounded, color: Colors.black))),
             const SizedBox(height: 16.0),
             //nazwisko
             TextField(
                 controller: _lastnameController,
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.next,
-                decoration: const InputDecoration(
-                    hintText: "Wpisz swoje nazwisko",
-                    prefixIcon: Icon(Icons.lock, color: Colors.black))),
+                decoration: InputDecoration(
+                    hintText: patientLastName,
+                    labelText: "Wpisz swoje nazwisko",
+                    prefixIcon: Icon(Icons.person, color: Colors.black))),
             const SizedBox(height: 16.0),
             //data urodzenia
             TextField(
                 controller: _birthdateController,
                 keyboardType: TextInputType.datetime,
                 textInputAction: TextInputAction.next,
-                decoration: const InputDecoration(
-                    hintText: "Wpisz swoją datę urodzenia",
-                    prefixIcon: Icon(Icons.lock, color: Colors.black))),
+                decoration: InputDecoration(
+                    hintText: patientBirthdate,
+                    labelText: "Wpisz swoją datę urodzenia",
+                    prefixIcon: Icon(Icons.date_range, color: Colors.black))),
             const SizedBox(height: 16.0),
             TextField(
                 controller: _weightController,
                 keyboardType: TextInputType.number,
                 textInputAction: TextInputAction.next,
-                decoration: const InputDecoration(
-                    hintText: "Wpisz swoją wagę [kg]",
-                    prefixIcon: Icon(Icons.lock, color: Colors.black))),
+                decoration: InputDecoration(
+                    hintText: patientWeight,
+                    labelText: "Wpisz swoją wagę [kg]",
+                    prefixIcon: Icon(Icons.local_restaurant_rounded,
+                        color: Colors.black))),
             const SizedBox(height: 16.0),
             TextField(
                 controller: _heightController,
                 keyboardType: TextInputType.number,
                 textInputAction: TextInputAction.done,
-                decoration: const InputDecoration(
-                    hintText: "Wpisz swój wzrost [cm]",
-                    prefixIcon: Icon(Icons.lock, color: Colors.black))),
+                decoration: InputDecoration(
+                    hintText: patientHeight,
+                    labelText: "Wpisz swój wzrost [cm]",
+                    prefixIcon: Icon(Icons.height, color: Colors.black))),
             const SizedBox(height: 18.0),
             Container(
               width: double.infinity,
@@ -129,7 +138,7 @@ class _RegisterDataScreenState extends State<RegisterDataScreen> {
                         weight: _weightController.text,
                         height: _heightController.text);
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => ProfileScreen()));
+                        builder: (context) => ProfileHomePage()));
                   },
                   child: const Text("Zapisz dane",
                       style: TextStyle(
@@ -152,5 +161,19 @@ class _RegisterDataScreenState extends State<RegisterDataScreen> {
             ),
           ])),
     );
+  }
+
+  void getUsername() async {
+    DocumentSnapshot snap = await FirebaseFirestore.instance
+        .collection("UserData")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+    setState(() {
+      patientName = (snap.data() as Map<String, dynamic>)['name'];
+      patientLastName = (snap.data() as Map<String, dynamic>)['lastname'];
+      patientHeight = (snap.data() as Map<String, dynamic>)['height'];
+      patientWeight = (snap.data() as Map<String, dynamic>)['weight'];
+      patientBirthdate = (snap.data() as Map<String, dynamic>)['birthdate'];
+    });
   }
 }

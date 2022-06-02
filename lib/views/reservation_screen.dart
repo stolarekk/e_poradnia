@@ -13,10 +13,6 @@ class ReservationScreen extends StatefulWidget {
 }
 
 class _ReservationScreenState extends State<ReservationScreen> {
-  final Stream<QuerySnapshot> _eventsStream = FirebaseFirestore.instance
-      .collection('Events')
-      .orderBy("fromDate", descending: true)
-      .snapshots();
   @override
   late String patientName;
   late String patientLastName;
@@ -37,7 +33,8 @@ class _ReservationScreenState extends State<ReservationScreen> {
       body: StreamBuilder(
           stream: FirebaseFirestore.instance
               .collection("Events")
-              .orderBy("fromDate")
+              //.orderBy("fromDate")
+              .where("isFree", isEqualTo: true)
               .snapshots(),
           builder: (context,
               AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
@@ -92,6 +89,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                               'patientId': snapshot.data!
                                                   .docs[index]["patientId"],
                                             });
+                                            Navigator.pop(context);
                                           },
                                           child: Text(
                                             "TAK",

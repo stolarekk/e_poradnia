@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:test/main.dart';
+import 'package:test/views/doctor_views/add_visit_description.dart';
 import 'package:test/views/register_data_screen.dart';
 import 'package:test/views/register_screen.dart';
 import 'package:test/views/main_calendar_screen.dart';
@@ -206,7 +207,11 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                           ),
                         ),
                         RawMaterialButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) =>
+                                    AddVisitDescriptionScreen()));
+                          },
                           child: Container(
                             decoration: BoxDecoration(
                               color: Colors.green[200],
@@ -229,8 +234,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                           ),
                         ),
                       ],
-                    )
-                ),
+                    )),
                 const SizedBox(height: 40.0),
               ])),
     );

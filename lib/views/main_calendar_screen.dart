@@ -43,12 +43,6 @@ class _MainCalendarScreenState extends State<MainCalendarScreen> {
                             MonthAppointmentDisplayMode.appointment,
                         showAgenda: true),
                   ),
-                  floatingActionButton: FloatingActionButton(
-                      child: Icon(Icons.add, color: Colors.white),
-                      backgroundColor: Colors.blueGrey,
-                      onPressed: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (context) => EventEditingPage()))),
                 );
 
               default:
