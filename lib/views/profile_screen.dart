@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:test/views/reservation_screen.dart';
 import 'package:test/views/visit_history.dart';
 import 'main_calendar_screen.dart';
+import 'notification_screen.dart';
 
 class ProfileHomePage extends StatefulWidget {
   const ProfileHomePage({Key? key}) : super(key: key);
@@ -185,24 +186,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ),
                         RawMaterialButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => NotyficationScreen(userType: 'patientId')));
+                          },
                           child: Container(
                             decoration: BoxDecoration(
-                              color: Colors.blue[200],
+                              color: Colors.pink[100],
                               border: Border.all(color: Colors.black, width: 1),
                               borderRadius: BorderRadius.circular(12.0),
                             ),
-                            margin: const EdgeInsets.only(right: 8),
+                            margin: const EdgeInsets.only(right: 10),
                             width: 150,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: const [
-                                Icon(Icons.call_missed_outgoing_rounded,
-                                    size: 40.0),
-                                Text('Przełóż wizytę',
+                                Icon(Icons.access_alarm_sharp, size: 40.0),
+                                Text('Powiadomienia',
                                     style: TextStyle(
                                         color: Colors.black,
-                                        fontSize: 14.0,
+                                        fontSize: 13.0,
                                         fontWeight: FontWeight.bold)),
                               ],
                             ),

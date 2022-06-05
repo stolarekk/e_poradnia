@@ -3,12 +3,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:test/views/profile_screen.dart';
 
 import 'doctor_views/doctor_profile_screen.dart';
 
 
 class NotyficationScreen extends StatefulWidget {
-  const NotyficationScreen({Key? key}) : super(key: key);
+
+  final String userType;
+  const NotyficationScreen({Key? key, required this.userType}) : super(key: key);
 
   @override
   State<NotyficationScreen> createState() => _NotyficationScreenState();
@@ -29,17 +32,30 @@ class _NotyficationScreenState extends State<NotyficationScreen> {
         centerTitle: true,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () =>
+
+          onPressed: () async {
+            if(await widget.userType == 'doctorId'){
               Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (context) => DoctorProfileHomePage(),
-              )),
+                builder: (context) =>
+                    DoctorProfileHomePage(),
+              ));
+            }
+            else {
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (context) =>
+                    ProfileHomePage(),
+              ));
+            }
+
+          }
         ),
       ),
       body: StreamBuilder(
           stream: FirebaseFirestore.instance
               .collection("Notification")
-              .where("doctorId",
+              .where(widget.userType,
               isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+              .orderBy("fromDate", descending: true)
               .snapshots(),
           builder: (context,
               AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
@@ -54,8 +70,20 @@ class _NotyficationScreenState extends State<NotyficationScreen> {
                 itemBuilder: (context, index) =>
                     Card(
                       child: RawMaterialButton(
-                        onPressed: () {},
+                        onPressed: () {
+
+                          showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                            title: Text(
+                                "Wizyta: " + snapshot.data!.docs[index]["title"]),
+                            content: Text("Objawy: " + snapshot.data!.docs[index]["symptoms"]
+                            ),
+                          )
+                          );
+                        },
                         child: Container(
+                          color: Colors.amberAccent,
                             height: 60,
                             child: Row(
                               children: [

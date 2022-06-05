@@ -86,8 +86,14 @@ class _MainCalendarScreenState extends State<MainCalendarScreen> {
         List<dynamic>.from(querySnapshot.docs.map((doc) => doc.data()));
 
     allEventsData.forEach((element) {
+      Color meetColor;
+      if(element['isFree']){
+        meetColor = const Color(0xFF09975F);
+      } else{
+        meetColor = const Color(0xFF860F5A);
+      }
       meetings.add(Meeting(element['title'], element['fromDate'].toDate(),
-          element['toDate'].toDate(), const Color(0xFF860F5A), false));
+          element['toDate'].toDate(), meetColor, false));
     });
     return meetings;
 

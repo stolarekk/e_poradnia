@@ -13,6 +13,7 @@ class ReservationScreen extends StatefulWidget {
 }
 
 class _ReservationScreenState extends State<ReservationScreen> {
+  TextEditingController _symptomsController = TextEditingController();
   @override
   late String patientName;
   late String patientLastName;
@@ -51,59 +52,81 @@ class _ReservationScreenState extends State<ReservationScreen> {
                         onPressed: () {
                           showDialog(
                               context: context,
-                              builder: (context) => AlertDialog(
-                                    title: Text(
-                                        "Czy na pewno chcesz zarezerwować tę wizytę?"),
-                                    content: Text(snapshot.data!.docs[index]
-                                            ["title"] +
-                                        ", " +
-                                        DateFormat('dd MMM yyy, H:mm').format(
-                                            snapshot
-                                                .data!.docs[index]["fromDate"]
-                                                .toDate())),
-                                    actions: [
-                                      TextButton(
-                                          onPressed: () async {
-                                            getUsername();
-                                            await FirebaseFirestore.instance
-                                                .collection('Events')
-                                                .doc(snapshot.data!.docs[index]
-                                                    .reference.id)
-                                                .update({
-                                              'isFree': false,
-                                              'patientId': FirebaseAuth
-                                                  .instance.currentUser!.uid,
-                                              'patientLastName':
-                                                  patientLastName,
-                                              'patientName': patientName
-                                            });
-                                            await FirebaseFirestore.instance
-                                                .collection('Notification')
-                                                .add({
-                                              'title': snapshot
-                                                  .data!.docs[index]["title"],
-                                              'fromDate': Timestamp.now(),
-                                              'status': "Rezerwacja",
-                                              'doctorId': snapshot.data!
-                                                  .docs[index]["doctorId"],
-                                              'patientId': snapshot.data!
-                                                  .docs[index]["patientId"],
-                                            });
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text(
-                                            "TAK",
-                                            style: TextStyle(
-                                                color: Colors.amber[700]),
-                                          )),
-                                      TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context),
-                                          child: Text("NIE",
+                              builder: (context) => SingleChildScrollView(
+                                child: AlertDialog(
+                                      title: Text(
+                                          "Czy na pewno chcesz zarezerwować tę wizytę?"),
+                                      content: Text(snapshot.data!.docs[index]
+                                              ["title"] +
+                                          ", " +
+                                          DateFormat('dd MMM yyy, H:mm').format(
+                                              snapshot
+                                                  .data!.docs[index]["fromDate"]
+                                                  .toDate())),
+                                      actions: [
+                                        SizedBox(height: 20),
+                                        Container(
+                                          height: 200,
+                                          child: TextField(
+                                              maxLines: 20,
+                                              controller: _symptomsController,
+                                              keyboardType: TextInputType.text,
+                                              textInputAction:
+                                              TextInputAction.next,
+                                              decoration: InputDecoration(
+                                                  filled: true,
+                                                  fillColor: Colors.grey[200],
+                                                  hintText: "Wpisz swoje objawy",
+                                                  labelText: "Wpisz swoje objawy",
+                                                  prefixIcon: Icon(
+                                                      Icons.design_services,
+                                                      color: Colors.black))),
+                                        ),
+                                        TextButton(
+                                            onPressed: () async {
+                                              getUsername();
+                                              await FirebaseFirestore.instance
+                                                  .collection('Events')
+                                                  .doc(snapshot.data!.docs[index]
+                                                      .reference.id)
+                                                  .update({
+                                                'isFree': false,
+                                                'patientId': FirebaseAuth
+                                                    .instance.currentUser!.uid,
+                                                'patientLastName':
+                                                    patientLastName,
+                                                'patientName': patientName,
+                                                'symptoms': _symptomsController.text
+                                              });
+                                              await FirebaseFirestore.instance
+                                                  .collection('Notification')
+                                                  .add({
+                                                'title': snapshot
+                                                    .data!.docs[index]["title"],
+                                                'fromDate': Timestamp.now(),
+                                                'status': "Rezerwacja",
+                                                'doctorId': snapshot.data!
+                                                    .docs[index]["doctorId"],
+                                                'patientId': snapshot.data!
+                                                    .docs[index]["patientId"],
+                                                'symptoms': _symptomsController.text
+                                              });
+                                              Navigator.pop(context);
+                                            },
+                                            child: Text(
+                                              "TAK",
                                               style: TextStyle(
-                                                  color: Colors.amber[700])))
-                                    ],
-                                  ));
+                                                  color: Colors.amber[700]),
+                                            )),
+                                        TextButton(
+                                            onPressed: () =>
+                                                Navigator.pop(context),
+                                            child: Text("NIE",
+                                                style: TextStyle(
+                                                    color: Colors.amber[700])))
+                                      ],
+                                    ),
+                              ));
                         },
                         child: Container(
                             height: 60,

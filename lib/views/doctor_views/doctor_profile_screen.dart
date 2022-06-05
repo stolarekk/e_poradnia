@@ -183,7 +183,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                         RawMaterialButton(
                           onPressed: () {
                             Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => NotyficationScreen()));
+                                builder: (context) => NotyficationScreen(userType: 'doctorId')));
                           },
                           child: Container(
                             decoration: BoxDecoration(
