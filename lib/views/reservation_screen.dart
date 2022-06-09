@@ -53,7 +53,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                           showDialog(
                               context: context,
                               builder: (context) => SingleChildScrollView(
-                                child: AlertDialog(
+                                    child: AlertDialog(
                                       title: Text(
                                           "Czy na pewno chcesz zarezerwować tę wizytę?"),
                                       content: Text(snapshot.data!.docs[index]
@@ -72,12 +72,14 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                               controller: _symptomsController,
                                               keyboardType: TextInputType.text,
                                               textInputAction:
-                                              TextInputAction.next,
+                                                  TextInputAction.next,
                                               decoration: InputDecoration(
                                                   filled: true,
                                                   fillColor: Colors.grey[200],
-                                                  hintText: "Wpisz swoje objawy",
-                                                  labelText: "Wpisz swoje objawy",
+                                                  hintText:
+                                                      "Wpisz swoje objawy",
+                                                  labelText:
+                                                      "Wpisz swoje objawy",
                                                   prefixIcon: Icon(
                                                       Icons.design_services,
                                                       color: Colors.black))),
@@ -87,8 +89,8 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                               getUsername();
                                               await FirebaseFirestore.instance
                                                   .collection('Events')
-                                                  .doc(snapshot.data!.docs[index]
-                                                      .reference.id)
+                                                  .doc(snapshot.data!
+                                                      .docs[index].reference.id)
                                                   .update({
                                                 'isFree': false,
                                                 'patientId': FirebaseAuth
@@ -96,7 +98,8 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                                 'patientLastName':
                                                     patientLastName,
                                                 'patientName': patientName,
-                                                'symptoms': _symptomsController.text
+                                                'symptoms':
+                                                    _symptomsController.text
                                               });
                                               await FirebaseFirestore.instance
                                                   .collection('Notification')
@@ -107,9 +110,13 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                                 'status': "Rezerwacja",
                                                 'doctorId': snapshot.data!
                                                     .docs[index]["doctorId"],
-                                                'patientId': snapshot.data!
-                                                    .docs[index]["patientId"],
-                                                'symptoms': _symptomsController.text
+                                                'patientId': FirebaseAuth
+                                                    .instance
+                                                    .currentUser!
+                                                    .uid, //snapshot.data!
+                                                // .docs[index]["patientId"],
+                                                'symptoms':
+                                                    _symptomsController.text
                                               });
                                               Navigator.pop(context);
                                             },
@@ -126,7 +133,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                                     color: Colors.amber[700])))
                                       ],
                                     ),
-                              ));
+                                  ));
                         },
                         child: Container(
                             height: 60,

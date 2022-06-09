@@ -80,6 +80,7 @@ class _CancellationScreenState extends State<CancellationScreen> {
                                               'status': "Odwołano",
                                               'doctorId': snapshot.data!
                                                   .docs[index]["doctorId"],
+                                              'symptoms': '',
                                               'patientId': snapshot.data!
                                                   .docs[index]["patientId"],
                                             });

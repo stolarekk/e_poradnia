@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:test/main.dart';
 import 'package:test/views/doctor_views/add_visit_description.dart';
+import 'package:test/views/doctor_views/doctor_cancel_visit_screen.dart';
 import 'package:test/views/register_data_screen.dart';
 import 'package:test/views/register_screen.dart';
 import 'package:test/views/main_calendar_screen.dart';
@@ -10,6 +11,7 @@ import 'package:intl/intl.dart';
 import '../event_editing_page.dart';
 import '../notification_screen.dart';
 import '../reservation_screen.dart';
+import 'doctor_visit_history.dart';
 
 class DoctorProfileHomePage extends StatefulWidget {
   const DoctorProfileHomePage({Key? key}) : super(key: key);
@@ -25,9 +27,7 @@ class _DoctorProfileHomePageState extends State<DoctorProfileHomePage> {
     DoctorProfileScreen(),
     RegisterDataScreen(),
     MainCalendarScreen(),
-    Center(
-        child:
-            Text('Historia wizyt - w budowie', style: TextStyle(fontSize: 60)))
+    DoctorVisitHistoryScreen()
   ];
   @override
   Widget build(BuildContext context) {
@@ -126,64 +126,75 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                         fontWeight: FontWeight.bold)),
                 const SizedBox(height: 40.0),
                 Container(
-                    height: 150,
+                    height: 200,
+                    child:
+                        ListView(scrollDirection: Axis.horizontal, children: [
+                      RawMaterialButton(
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => EventEditingPage()));
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.cyan[200],
+                            border: Border.all(color: Colors.black, width: 1),
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          margin: const EdgeInsets.only(right: 14),
+                          width: 173,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Icon(Icons.edit_calendar_rounded, size: 40.0),
+                              Text('Ustal godziny wizyt',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14.0,
+                                      fontWeight: FontWeight.bold)),
+                            ],
+                          ),
+                        ),
+                      ),
+                      RawMaterialButton(
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  DoctorCancellationScreen()));
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.red[300],
+                            border: Border.all(color: Colors.black, width: 1),
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          //margin: const EdgeInsets.only(right: 8),
+                          width: 173,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Icon(Icons.cancel_presentation_rounded,
+                                  size: 40.0),
+                              Text('Odwołaj wizytę',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14.0,
+                                      fontWeight: FontWeight.bold)),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ])),
+                const SizedBox(height: 14.0),
+                Container(
+                    height: 200,
                     child: ListView(
                       scrollDirection: Axis.horizontal,
                       children: [
                         RawMaterialButton(
                           onPressed: () {
                             Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => EventEditingPage()));
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.cyan[200],
-                              border: Border.all(color: Colors.black, width: 1),
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                            margin: const EdgeInsets.only(right: 8),
-                            width: 150,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Icon(Icons.edit_calendar_rounded, size: 40.0),
-                                Text('Ustal godziny wizyt',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 14.0,
-                                        fontWeight: FontWeight.bold)),
-                              ],
-                            ),
-                          ),
-                        ),
-                        RawMaterialButton(
-                          onPressed: () {},
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.red[400],
-                              border: Border.all(color: Colors.black, width: 1),
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                            margin: const EdgeInsets.only(right: 8),
-                            width: 150,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Icon(Icons.cancel_presentation_rounded,
-                                    size: 40.0),
-                                Text('Odwołaj wizytę',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 14.0,
-                                        fontWeight: FontWeight.bold)),
-                              ],
-                            ),
-                          ),
-                        ),
-                        RawMaterialButton(
-                          onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => NotyficationScreen(userType: 'doctorId')));
+                                builder: (context) =>
+                                    NotyficationScreen(userType: 'doctorId')));
                           },
                           child: Container(
                             decoration: BoxDecoration(
@@ -191,8 +202,8 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                               border: Border.all(color: Colors.black, width: 1),
                               borderRadius: BorderRadius.circular(12.0),
                             ),
-                            margin: const EdgeInsets.only(right: 10),
-                            width: 150,
+                            margin: const EdgeInsets.only(right: 14),
+                            width: 173,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: const [
@@ -218,8 +229,8 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                               border: Border.all(color: Colors.black, width: 1),
                               borderRadius: BorderRadius.circular(12.0),
                             ),
-                            margin: const EdgeInsets.only(right: 10),
-                            width: 150,
+                            //margin: const EdgeInsets.only(right: 15),
+                            width: 173,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: const [

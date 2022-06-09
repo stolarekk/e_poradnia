@@ -7,23 +7,16 @@ import 'package:test/views/profile_screen.dart';
 
 import 'doctor_views/doctor_profile_screen.dart';
 
-
 class NotyficationScreen extends StatefulWidget {
-
   final String userType;
-  const NotyficationScreen({Key? key, required this.userType}) : super(key: key);
+  const NotyficationScreen({Key? key, required this.userType})
+      : super(key: key);
 
   @override
   State<NotyficationScreen> createState() => _NotyficationScreenState();
 }
 
 class _NotyficationScreenState extends State<NotyficationScreen> {
-
-  final Stream<QuerySnapshot> _eventsStream = FirebaseFirestore.instance
-      .collection('Notification')
-      .orderBy("fromDate", descending: true)
-      .snapshots();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,31 +24,25 @@ class _NotyficationScreenState extends State<NotyficationScreen> {
         title: Text("Powiadomienia"),
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-
-          onPressed: () async {
-            if(await widget.userType == 'doctorId'){
-              Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (context) =>
-                    DoctorProfileHomePage(),
-              ));
-            }
-            else {
-              Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (context) =>
-                    ProfileHomePage(),
-              ));
-            }
-
-          }
-        ),
+            icon: Icon(Icons.arrow_back, color: Colors.black),
+            onPressed: () async {
+              if (await widget.userType == 'doctorId') {
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (context) => DoctorProfileHomePage(),
+                ));
+              } else {
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (context) => ProfileHomePage(),
+                ));
+              }
+            }),
       ),
       body: StreamBuilder(
           stream: FirebaseFirestore.instance
               .collection("Notification")
               .where(widget.userType,
-              isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-              .orderBy("fromDate", descending: true)
+                  isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+              //.orderBy("fromDate", descending: true)
               .snapshots(),
           builder: (context,
               AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
@@ -67,60 +54,56 @@ class _NotyficationScreenState extends State<NotyficationScreen> {
 
             return ListView.builder(
                 itemCount: snapshot.data!.docs.length,
-                itemBuilder: (context, index) =>
-                    Card(
+                itemBuilder: (context, index) => Card(
                       child: RawMaterialButton(
                         onPressed: () {
-
                           showDialog(
                               context: context,
                               builder: (context) => AlertDialog(
-                            title: Text(
-                                "Wizyta: " + snapshot.data!.docs[index]["title"]),
-                            content: Text("Objawy: " + snapshot.data!.docs[index]["symptoms"]
-                            ),
-                          )
-                          );
+                                    title: Text("Wizyta: " +
+                                        snapshot.data!.docs[index]["title"]),
+                                    content: Text("Objawy: " +
+                                        snapshot.data!.docs[index]["symptoms"]),
+                                  ));
                         },
                         child: Container(
-                          color: Colors.amberAccent,
+                            color: Colors.amberAccent,
                             height: 60,
                             child: Row(
                               children: [
                                 Expanded(
                                     child: Row(
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment:
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
                                           CrossAxisAlignment.start,
-                                          mainAxisSize: MainAxisSize.min,
-
-                                        ),
-                                        Expanded(
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Text(snapshot.data!.docs[index]
-                                              ["title"] +
-                                                  ", " +
-                                                  DateFormat('dd MMM yyy, H:mm').format(
-                                                      snapshot
-                                                          .data!.docs[index]["fromDate"]
-                                                          .toDate()))
-                                            ],
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Text(snapshot.data!.docs[index]
+                                      mainAxisSize: MainAxisSize.min,
+                                    ),
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(snapshot.data!.docs[index]
+                                                  ["title"] +
+                                              ", " +
+                                              DateFormat('dd MMM yyy, H:mm')
+                                                  .format(snapshot.data!
+                                                      .docs[index]["fromDate"]
+                                                      .toDate()))
+                                        ],
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(snapshot.data!.docs[index]
                                               ["status"]),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    )),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                )),
                               ],
                             )),
                       ),

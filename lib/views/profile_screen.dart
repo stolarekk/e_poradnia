@@ -109,138 +109,140 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
-              //mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text("E-poradnia",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 28.0,
-                        fontWeight: FontWeight.bold)),
-                const SizedBox(height: 5.0),
-                const Text("Witaj na swoim profilu!",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 22.0,
-                        fontWeight: FontWeight.bold)),
-                const SizedBox(height: 40.0),
-                Container(
-                    height: 150,
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: [
-                        RawMaterialButton(
-                          onPressed: () {
-                            Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                    builder: (context) => ReservationScreen()));
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.lightGreen[200],
-                              border: Border.all(color: Colors.black, width: 1),
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                            margin: const EdgeInsets.only(right: 8),
-                            width: 150,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Icon(Icons.edit_calendar_rounded, size: 40.0),
-                                Text('Zarezerwuj wizytę',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 14.0,
-                                        fontWeight: FontWeight.bold)),
-                              ],
-                            ),
-                          ),
+            //mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text("E-poradnia",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 28.0,
+                      fontWeight: FontWeight.bold)),
+              const SizedBox(height: 5.0),
+              const Text("Witaj na swoim profilu!",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 22.0,
+                      fontWeight: FontWeight.bold)),
+              const SizedBox(height: 40.0),
+              Container(
+                  height: 200,
+                  child: ListView(scrollDirection: Axis.horizontal, children: [
+                    RawMaterialButton(
+                      onPressed: () {
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (context) => ReservationScreen()));
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.lightGreen[200],
+                          border: Border.all(color: Colors.black, width: 1),
+                          borderRadius: BorderRadius.circular(12.0),
                         ),
-                        RawMaterialButton(
-                          onPressed: () {
-                            Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        CancellationScreen()));
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.red[200],
-                              border: Border.all(color: Colors.black, width: 1),
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                            margin: const EdgeInsets.only(right: 8),
-                            width: 150,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Icon(Icons.cancel_presentation_rounded,
-                                    size: 40.0),
-                                Text('Odwołaj wizytę',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 14.0,
-                                        fontWeight: FontWeight.bold)),
-                              ],
-                            ),
-                          ),
+                        margin: const EdgeInsets.only(right: 14),
+                        width: 173,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(Icons.edit_calendar_rounded, size: 40.0),
+                            Text('Zarezerwuj wizytę',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14.0,
+                                    fontWeight: FontWeight.bold)),
+                          ],
                         ),
-                        RawMaterialButton(
-                          onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => NotyficationScreen(userType: 'patientId')));
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.pink[100],
-                              border: Border.all(color: Colors.black, width: 1),
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                            margin: const EdgeInsets.only(right: 10),
-                            width: 150,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Icon(Icons.access_alarm_sharp, size: 40.0),
-                                Text('Powiadomienia',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 13.0,
-                                        fontWeight: FontWeight.bold)),
-                              ],
-                            ),
-                          ),
+                      ),
+                    ),
+                    RawMaterialButton(
+                      onPressed: () {
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (context) => CancellationScreen()));
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.red[200],
+                          border: Border.all(color: Colors.black, width: 1),
+                          borderRadius: BorderRadius.circular(12.0),
                         ),
-                        RawMaterialButton(
-                          onPressed: () {
-                            Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                    builder: (context) => MedicalDocScreen()));
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.amber[200],
-                              border: Border.all(color: Colors.black, width: 1),
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                            margin: const EdgeInsets.only(right: 10),
-                            width: 150,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Icon(Icons.difference_outlined, size: 40.0),
-                                Text('Dokumentacja med.',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 13.0,
-                                        fontWeight: FontWeight.bold)),
-                              ],
-                            ),
-                          ),
+                        //margin: const EdgeInsets.only(right: 8),
+                        width: 173,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(Icons.cancel_presentation_rounded, size: 40.0),
+                            Text('Odwołaj wizytę',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14.0,
+                                    fontWeight: FontWeight.bold)),
+                          ],
                         ),
-                      ],
-                    )),
-                const SizedBox(height: 40.0),
+                      ),
+                    )
+                  ])),
+              ////
+              ///
+              const SizedBox(height: 14.0),
+              Container(
+                  height: 200,
+                  child: ListView(scrollDirection: Axis.horizontal, children: [
+                    RawMaterialButton(
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) =>
+                                NotyficationScreen(userType: 'patientId')));
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.pink[100],
+                          border: Border.all(color: Colors.black, width: 1),
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        margin: const EdgeInsets.only(right: 14),
+                        width: 173,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(Icons.access_alarm_sharp, size: 40.0),
+                            Text('Powiadomienia',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 13.0,
+                                    fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                      ),
+                    ),
+                    RawMaterialButton(
+                      onPressed: () {
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (context) => MedicalDocScreen()));
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.amber[200],
+                          border: Border.all(color: Colors.black, width: 1),
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        //margin: const EdgeInsets.only(right: 8),
+                        width: 173,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(Icons.difference_outlined, size: 40.0),
+                            Text('Dokumentacja med.',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 13.0,
+                                    fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                      ),
+                    )
+                  ])),
+            ],
+
+            /* const SizedBox(height: 40.0),
                 const Text("Twoje wizyty:",
                     style: TextStyle(
                         color: Colors.black,
@@ -338,8 +340,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ))
                   ]),
-                )
-              ])),
+                )*/
+          )),
     );
   }
 }
