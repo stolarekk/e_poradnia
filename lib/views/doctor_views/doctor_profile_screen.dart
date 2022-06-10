@@ -11,6 +11,7 @@ import 'package:intl/intl.dart';
 import '../event_editing_page.dart';
 import '../notification_screen.dart';
 import '../reservation_screen.dart';
+import 'doctor_notification_screen.dart';
 import 'doctor_visit_history.dart';
 
 class DoctorProfileHomePage extends StatefulWidget {
@@ -192,9 +193,10 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                       children: [
                         RawMaterialButton(
                           onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) =>
-                                    NotyficationScreen(userType: 'doctorId')));
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        DoctorNotyficationScreen()));
                           },
                           child: Container(
                             decoration: BoxDecoration(
@@ -219,9 +221,10 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                         ),
                         RawMaterialButton(
                           onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) =>
-                                    AddVisitDescriptionScreen()));
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        AddVisitDescriptionScreen()));
                           },
                           child: Container(
                             decoration: BoxDecoration(

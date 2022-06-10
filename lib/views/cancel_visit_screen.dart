@@ -69,7 +69,10 @@ class _CancellationScreenState extends State<CancellationScreen> {
                                               'isFree': true,
                                               'patientId': "",
                                               'patientLastName': "",
-                                              'patientName': ""
+                                              'patientName': "",
+                                              'symptoms': "",
+                                              'patientHeight': "",
+                                              'patientWeight': ""
                                             });
                                             await FirebaseFirestore.instance
                                                 .collection('Notification')

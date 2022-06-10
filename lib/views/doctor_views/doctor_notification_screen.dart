@@ -3,18 +3,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:test/views/profile_screen.dart';
 
-import 'doctor_views/doctor_profile_screen.dart';
+import 'doctor_profile_screen.dart';
 
-class NotyficationScreen extends StatefulWidget {
-  const NotyficationScreen({Key? key}) : super(key: key);
+class DoctorNotyficationScreen extends StatefulWidget {
+  const DoctorNotyficationScreen({Key? key}) : super(key: key);
 
   @override
-  State<NotyficationScreen> createState() => _NotyficationScreenState();
+  State<DoctorNotyficationScreen> createState() =>
+      _DoctorNotyficationScreenState();
 }
 
-class _NotyficationScreenState extends State<NotyficationScreen> {
+class _DoctorNotyficationScreenState extends State<DoctorNotyficationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,14 +25,14 @@ class _NotyficationScreenState extends State<NotyficationScreen> {
             icon: Icon(Icons.arrow_back, color: Colors.black),
             onPressed: () {
               Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (context) => ProfileHomePage(),
+                builder: (context) => DoctorProfileHomePage(),
               ));
             }),
       ),
       body: StreamBuilder(
           stream: FirebaseFirestore.instance
               .collection("Notification")
-              .where("patientId",
+              .where("doctorId",
                   isEqualTo: FirebaseAuth.instance.currentUser!.uid)
               //.orderBy("fromDate", descending: true)
               .snapshots(),

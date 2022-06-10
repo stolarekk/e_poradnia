@@ -108,6 +108,39 @@ class _DoctorVisitHistoryScreenState extends State<DoctorVisitHistoryScreen> {
                                               margin: const EdgeInsets.only(
                                                   bottom: 5),
                                               child: TextField(
+                                                  readOnly: true,
+                                                  controller:
+                                                      TextEditingController(
+                                                          text: snapshot.data!
+                                                                  .docs[index][
+                                                              "patientWeight"]),
+                                                  decoration: InputDecoration(
+                                                    filled: true,
+                                                    labelText: "Waga pacjenta",
+                                                  )),
+                                            ),
+                                            Container(
+                                              width: 350,
+                                              margin: const EdgeInsets.only(
+                                                  bottom: 5),
+                                              child: TextField(
+                                                  readOnly: true,
+                                                  controller:
+                                                      TextEditingController(
+                                                          text: snapshot.data!
+                                                                  .docs[index][
+                                                              "patientHeight"]),
+                                                  decoration: InputDecoration(
+                                                    filled: true,
+                                                    labelText:
+                                                        "Wzrost pacjenta",
+                                                  )),
+                                            ),
+                                            Container(
+                                              width: 350,
+                                              margin: const EdgeInsets.only(
+                                                  bottom: 5),
+                                              child: TextField(
                                                   maxLines: 4,
                                                   readOnly: true,
                                                   controller:

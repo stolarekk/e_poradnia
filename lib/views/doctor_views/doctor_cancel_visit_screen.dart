@@ -28,7 +28,7 @@ class _DoctorCancellationScreenState extends State<DoctorCancellationScreen> {
                 .collection("Events")
                 .where("doctorId",
                     isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-                .where("isFree", isEqualTo: false)
+                //.where("isFree", isEqualTo: false)
                 //.where("toDate", isLessThanOrEqualTo: DateTime.now())
                 .snapshots(),
             builder: (context,

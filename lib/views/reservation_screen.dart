@@ -17,6 +17,8 @@ class _ReservationScreenState extends State<ReservationScreen> {
   @override
   late String patientName;
   late String patientLastName;
+  late String patientWeight;
+  late String patientHeight;
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,6 +100,8 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                                 'patientLastName':
                                                     patientLastName,
                                                 'patientName': patientName,
+                                                'patientWeight': patientWeight,
+                                                'patientHeight': patientHeight,
                                                 'symptoms':
                                                     _symptomsController.text
                                               });
@@ -191,6 +195,8 @@ class _ReservationScreenState extends State<ReservationScreen> {
     setState(() {
       patientName = (snap.data() as Map<String, dynamic>)['name'];
       patientLastName = (snap.data() as Map<String, dynamic>)['lastname'];
+      patientWeight = (snap.data() as Map<String, dynamic>)['weight'];
+      patientHeight = (snap.data() as Map<String, dynamic>)['height'];
     });
   }
 }

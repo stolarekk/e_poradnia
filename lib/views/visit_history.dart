@@ -19,13 +19,6 @@ class _VisitHistoryScreenState extends State<VisitHistoryScreen> {
       appBar: AppBar(
         title: Text("Historia wizyt"),
         centerTitle: true,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () =>
-              Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (context) => ProfileHomePage(),
-          )),
-        ),
       ),
       body: StreamBuilder(
           stream: FirebaseFirestore.instance

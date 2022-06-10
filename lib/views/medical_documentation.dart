@@ -56,28 +56,115 @@ class _MedicalDocScreenState extends State<MedicalDocScreen> {
                           showDialog(
                               context: context,
                               builder: (context) => AlertDialog(
+                                    insetPadding: EdgeInsets.all(16.0),
                                     title: Text("Opis wizyty"),
-                                    content: Text(snapshot.data!.docs[index]
-                                            ["title"] +
-                                        ", " +
-                                        DateFormat('dd MMM yyy, H:mm').format(
-                                            snapshot
-                                                .data!.docs[index]["fromDate"]
-                                                .toDate())),
                                     actions: [
-                                      Container(
-                                        height: 400,
-                                        child: TextField(
-                                            readOnly: true,
-                                            maxLines: 20,
-                                            controller: TextEditingController(
-                                                text: snapshot.data!.docs[index]
-                                                    ["description"]),
-                                            decoration: InputDecoration(
-                                              filled: true,
-                                              fillColor: Colors.grey[200],
-                                              labelText: "Opis wizyty",
-                                            )),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            width: 350,
+                                            margin: const EdgeInsets.only(
+                                                bottom: 5),
+                                            child: TextField(
+                                                readOnly: true,
+                                                controller:
+                                                    TextEditingController(
+                                                        text: snapshot.data!
+                                                                .docs[index]
+                                                            ["title"]),
+                                                decoration: InputDecoration(
+                                                  filled: true,
+                                                  labelText: "Tytuł wizyty",
+                                                )),
+                                          ),
+                                          Container(
+                                            width: 350,
+                                            margin: const EdgeInsets.only(
+                                                bottom: 5),
+                                            child: TextField(
+                                                readOnly: true,
+                                                controller:
+                                                    TextEditingController(
+                                                        text: snapshot.data!
+                                                                .docs[index]
+                                                            ["doctorName"]),
+                                                decoration: InputDecoration(
+                                                  filled: true,
+                                                  labelText: "Imię doktora",
+                                                )),
+                                          ),
+                                          Container(
+                                            width: 350,
+                                            margin: const EdgeInsets.only(
+                                                bottom: 5),
+                                            child: TextField(
+                                                readOnly: true,
+                                                controller:
+                                                    TextEditingController(
+                                                        text: snapshot.data!
+                                                                .docs[index]
+                                                            ["doctorLastName"]),
+                                                decoration: InputDecoration(
+                                                  filled: true,
+                                                  labelText: "Nazwisko doktora",
+                                                )),
+                                          ),
+                                          Container(
+                                            width: 350,
+                                            margin: const EdgeInsets.only(
+                                                bottom: 5),
+                                            child: TextField(
+                                                readOnly: true,
+                                                controller:
+                                                    TextEditingController(
+                                                        text: snapshot.data!
+                                                                .docs[index]
+                                                            ["doctorType"]),
+                                                decoration: InputDecoration(
+                                                  filled: true,
+                                                  labelText:
+                                                      "Specjalizacja doktora",
+                                                )),
+                                          ),
+                                          Container(
+                                            width: 350,
+                                            margin: const EdgeInsets.only(
+                                                bottom: 5),
+                                            child: TextField(
+                                                maxLines: 8,
+                                                readOnly: true,
+                                                controller:
+                                                    TextEditingController(
+                                                        text: snapshot.data!
+                                                                .docs[index]
+                                                            ["description"]),
+                                                decoration: InputDecoration(
+                                                  filled: true,
+                                                  labelText: "Opis wizyty",
+                                                )),
+                                          ),
+                                          Container(
+                                            width: 350,
+                                            margin: const EdgeInsets.only(
+                                                bottom: 25),
+                                            child: TextField(
+                                                readOnly: true,
+                                                controller: TextEditingController(
+                                                    text: DateFormat(
+                                                            'dd MMM yyy, H:mm')
+                                                        .format(snapshot
+                                                            .data!
+                                                            .docs[index]
+                                                                ["fromDate"]
+                                                            .toDate())),
+                                                decoration: InputDecoration(
+                                                  filled: true,
+                                                  labelText: "Data wizyty",
+                                                )),
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ));

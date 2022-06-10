@@ -188,9 +188,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: ListView(scrollDirection: Axis.horizontal, children: [
                     RawMaterialButton(
                       onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) =>
-                                NotyficationScreen(userType: 'patientId')));
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (context) => NotyficationScreen()));
                       },
                       child: Container(
                         decoration: BoxDecoration(
